@@ -2,8 +2,6 @@ package com.assignment.model;
 
 import java.io.Serializable;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,8 +23,18 @@ public class User implements Serializable{
 	@Persistent
 	Key id;
 	
+
+	@Persistent(defaultFetchGroup = "true", mappedBy = "user")
+	List<TaskModel> tasks;
 	
 	public User(final Key id) {
 		this.id = id;
+	}
+	
+	public void addTask(final String taskname, final Date date) throws ParseException{
+		TaskModel task = new TaskModel();
+		task.setName(taskname);
+		task.setCreatedDate(date);
+		tasks.add(task);
 	}
 }

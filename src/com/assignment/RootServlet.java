@@ -1,6 +1,7 @@
 package com.assignment;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import javax.jdo.JDOHelper;
@@ -11,9 +12,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.assignment.model.TaskModel;
 import com.assignment.model.User;
 import com.assignment.utils.Common;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 
 /**
  * Servlet implementation class RootServlet
@@ -45,6 +49,7 @@ public class RootServlet extends HttpServlet {
         }
 
 	}
+	
 	static void hasUserLoggedIn(final Key k){
 		PersistenceManager pm = JDOHelper.getPersistenceManagerFactory("transactions-optional").getPersistenceManager();
 		
