@@ -64,13 +64,27 @@ public class RootServlet extends HttpServlet {
 				int index = Integer.parseInt(request.getParameter("index"));
 				showTask(Common.getUserKey(Common.getUser()), index, request,
 						response);
-			}
+			}else if(request.getParameter("delete")!=null){
+        		int index = Integer.parseInt(request.getParameter("index"));
+        		deleteTask(Common.getUserKey(Common.getUser()), index);
+        		response.sendRedirect("/");
+        	}
 		} else {
 
 			response.sendRedirect("/");
 		}
 	}
-
+	static void deleteTask(final Key k, final int index){
+		PersistenceManager pm = JDOHelper.getPersistenceManagerFactory("transactions-optional").getPersistenceManager();
+		pm.currentTransaction().begin();
+		User user = pm.getObjectById(User.class, k);
+		TaskModel taskDeleted = user.getTask(index);
+		user.deleteTask(index);
+		pm.deletePersistent(taskDeleted);
+		pm.currentTransaction().commit();
+		pm.close();
+	}
+	
 	static void showTask(final Key k, final int index, HttpServletRequest req,
 			HttpServletResponse res) {
 		PersistenceManager pm = JDOHelper.getPersistenceManagerFactory(

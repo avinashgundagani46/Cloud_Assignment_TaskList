@@ -69,8 +69,18 @@
 				<div>
 					<a href="/add.jsp">Add a task</a>
 				</div>
+				<input type="hidden" value="" name = "index" id = "index">
 			</form>
 		</div>
 	</div>
+	<script type="text/javascript">
+		function updateIndex(){
+			var selectedIndex = this.clickedIndex;
+			document.getElementById('index').value = selectedIndex;
+			return true;
+		}
+	</script>
 </body>
+
+
 </html>

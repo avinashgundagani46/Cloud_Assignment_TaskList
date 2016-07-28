@@ -40,7 +40,9 @@ public class User implements Serializable{
 	public TaskModel getTask(final int index){
 		return tasks.get(index);
 	}
-	
+	public void deleteTask(final int index){
+		tasks.remove(index);
+	}
 	public List<TaskModel> getTasks(){
 		return tasks;
 	}
