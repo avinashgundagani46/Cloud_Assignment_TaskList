@@ -1,6 +1,7 @@
 package com.assignment;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import javax.jdo.JDOHelper;
@@ -72,6 +73,12 @@ public class RootServlet extends HttpServlet {
         		int index = Integer.parseInt(request.getParameter("index"));
         		toggleTask(Common.getUserKey(Common.getUser()), index);
         		response.sendRedirect("/");
+        	}else if(request.getParameter("update")!=null){
+        		int index = Integer.parseInt(request.getParameter("index"));
+        		String taskname = request.getParameter("taskname");
+        		Date date = new Date();
+        		updateTask(Common.getUserKey(Common.getUser()), index, taskname, date);
+        		response.sendRedirect("/");
         	}
 		} else {
 
@@ -99,7 +106,17 @@ public class RootServlet extends HttpServlet {
 		pm.currentTransaction().commit();
 		pm.close();
 	}
-	
+	static void updateTask(final Key k, final int index, String taskName, Date date){
+		PersistenceManager pm = JDOHelper.getPersistenceManagerFactory("transactions-optional").getPersistenceManager();
+		pm.currentTransaction().begin();
+		User user = pm.getObjectById(User.class, k);
+		TaskModel taskModified = user.getTask(index);
+		taskModified.setCreatedDate(date);
+		taskModified.setName(taskName);
+		pm.makePersistentAll(taskModified);
+		pm.currentTransaction().commit();
+		pm.close();
+	}
 	static void showTask(final Key k, final int index, HttpServletRequest req,
 			HttpServletResponse res) {
 		PersistenceManager pm = JDOHelper.getPersistenceManagerFactory(
