@@ -68,6 +68,10 @@ public class RootServlet extends HttpServlet {
         		int index = Integer.parseInt(request.getParameter("index"));
         		deleteTask(Common.getUserKey(Common.getUser()), index);
         		response.sendRedirect("/");
+        	}else if(request.getParameter("toogleComplete")!=null){
+        		int index = Integer.parseInt(request.getParameter("index"));
+        		toggleTask(Common.getUserKey(Common.getUser()), index);
+        		response.sendRedirect("/");
         	}
 		} else {
 
@@ -81,6 +85,17 @@ public class RootServlet extends HttpServlet {
 		TaskModel taskDeleted = user.getTask(index);
 		user.deleteTask(index);
 		pm.deletePersistent(taskDeleted);
+		pm.currentTransaction().commit();
+		pm.close();
+	}
+	
+	static void toggleTask(final Key k, final int index){
+		PersistenceManager pm = JDOHelper.getPersistenceManagerFactory("transactions-optional").getPersistenceManager();
+		pm.currentTransaction().begin();
+		User user = pm.getObjectById(User.class, k);
+		TaskModel taskModified = user.getTask(index);
+		taskModified.setCompleted(!taskModified.isCompleted());
+		pm.makePersistentAll(taskModified);
 		pm.currentTransaction().commit();
 		pm.close();
 	}

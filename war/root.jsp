@@ -51,6 +51,7 @@
 					%>
 					<li>
 						<label><%=task.getName()%> :: </label>
+						<label>"<%= task.isCompleted()? "Completed": "Pending" %>"</label>
 						<button type="submit" name="show"
 							onclick="clickedIndex = '<%=index%>';" class="button">Edit</button>
 						<input class="button" onclick="clickedIndex = '<%=index%>';"
