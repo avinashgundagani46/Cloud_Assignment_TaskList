@@ -37,4 +37,11 @@ public class User implements Serializable{
 		task.setCreatedDate(date);
 		tasks.add(task);
 	}
+	public TaskModel getTask(final int index){
+		return tasks.get(index);
+	}
+	
+	public List<TaskModel> getTasks(){
+		return tasks;
+	}
 }

@@ -1,4 +1,5 @@
 
+<%@page import="com.assignment.model.TaskModel"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.List"%>
@@ -32,9 +33,43 @@
 			<a href="<%=url%>"><%=urlLinktext%></a>
 		</div>
 		<div style="margin-top: 10%; margin-left: 40%;">
-			<div>
-				<a href="/add.jsp">Add a task</a>
-			</div>
+			<%
+				if (user != null) {
+					List<TaskModel> tasks = (List<TaskModel>) request.getSession()
+							.getAttribute("tasks");
+					int index = 0;
+			%>
+
+			<form action="/" method="post" onsubmit="return updateIndex()"
+				id="form1">
+				<%
+					session.setAttribute("index", index);
+				%>
+				<ul>
+					<%
+						for (TaskModel task : tasks) {
+					%>
+					<li>
+						<label><%=task.getName()%> :: </label>
+						<button type="submit" name="show"
+							onclick="clickedIndex = '<%=index%>';" class="button">Edit</button>
+						<input class="button" onclick="clickedIndex = '<%=index%>';"
+						type="submit" name="delete" value="Delete"> <input
+						class="button" onclick="clickedIndex = '<%=index%>';"
+						type="submit" name="toogleComplete" value="Toggle Complete">
+					</li>
+					<%
+						index++;
+							}
+					%>
+				</ul>
+				<%
+					}
+				%>
+				<div>
+					<a href="/add.jsp">Add a task</a>
+				</div>
+			</form>
 		</div>
 	</div>
 </body>
